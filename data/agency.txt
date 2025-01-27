@@ -1,0 +1,2 @@
+agency_name,agency_url,agency_timezone,agency_lang
+FGC,https://www.fgc.cat,Europe/Madrid,es

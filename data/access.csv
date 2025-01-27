@@ -1,0 +1,105 @@
+stop_name,stop_id,wheelchair_boarding,wc
+Barcelona - Plaça Catalunya,PC,1, 2
+Provença,PR,0, -1
+Gràcia,GR,0, -1
+Sant Gervasi,SG,0, -1
+Muntaner,MN,0, -1
+La Bonanova,BN,0, -1
+Les Tres Torres,TT,0, -1
+Sarrià,SR,0, -1
+Reina Elisenda,RE,0, -1
+Pl. Molina,PM,0, -1
+Pàdua,PD,0, -1
+El Putxet,EP,0, -1
+Av. Tibidabo,TB,0, -1
+Peu del Funicular,PF,0, -1
+Vallvidrera Superior,VS,0, -1
+Baixador de Vallvidrera,VL,0, -1
+Les Planes,LP,0, -1
+La Floresta,LF,0, -1
+Valldoreix,VD,0, -1
+Sant Cugat Centre,SC,0, -1
+Mira-Sol,MS,0, -1
+Hospital General,HG,0, -1
+Rubí Centre,RB,0, -1
+Les Fonts,FN,0, -1
+Terrassa - Rambla,TR,0, -1
+Volpelleres,VO,0, -1
+Sant Joan,SJ,0, -1
+Bellaterra,BT,0, -1
+Universitat Autònoma,UN,0, -1
+Sant Quirze,SQ,0, -1
+Vallparadís Universitat,VP,0, -1
+Terrassa Estació del nord,EN,0, -1
+Terrassa Nacions Unides,NA,0, -1
+Barcelona - Plaça Espanya,PE,0, -1
+Magòria La Campana,MG,0, -1
+Ildefons Cerdà,IC,0, -1
+Gornal,GO,0, -1
+Sant Josep,SP,0, -1
+L'Hospitalet Av. Carrilet,LH,0, -1
+Almeda,AL,0, -1
+Cornellà Riera,CO,1, -1
+Sant Boi,BO,0, -1
+Europa | Fira,EU,0, -1
+Martorell Central,MC,0, -1
+Colònia Güell,CG,0, -1
+Molí Nou - Ciutat Cooperativa,ML,0, -1
+Santa Coloma de Cervelló,CL,0, -1
+Sant Vicenç dels Horts,VH,0, -1
+Can Ros,CR,0, -1
+Quatre Camins,QC,0, -1
+Pallejà,PA,0, -1
+Sant Andreu de la Barca,SA,0, -1
+El Palau,PL,0, -1
+Martorell Vila,MV,0, -1
+Martorell Enllaç,ME,0, -1
+Abrera,AB,0, -1
+Olesa de Montserrat,OL,0, -1
+Montserrat-Aeri,AE,0, -1
+Monistrol de Montserrat,MO,0, -1
+Castellbell i El Vilar,CB,0, -1
+Sant Vicenç-Castellgalí,SV,0, -1
+Manresa Viladordis,VI,0, -1
+Manresa-Alta,MA,0, -1
+Manresa-Baixador,MB,0, -1
+Sant Esteve Sesrovires,SE,0, -1
+La Beguda,BE,0, -1
+Can Parellada,CP,0, -1
+Masquefa,MQ,0, -1
+Piera,PI,0, -1
+Vallbona d'Anoia,VA,0, -1
+Capellades,CA,0, -1
+La Pobla de Claramunt,PO,0, -1
+Vilanova del Camí,VN,0, -1
+Igualada,IG,0, -1
+Monistrol-Vila,MP,0, -1
+Montserrat,MM,0, -1
+Lleida,LE,0, -1
+Alcoletge,AT,0, -1
+Vilanova de la Barca,VB,0, -1
+Térmens,RM,0, -1
+Vallfogona de Balaguer,VF,0, -1
+Balaguer,BG,0, -1
+Gerb,GB,0, -1
+St. Llorenç de Montgai,SM,0, -1
+Vilanova de la Sal,LS,0, -1
+Santa Linya,SN,0, -1
+Àger,AR,0, -1
+Cellers-Llimiana,LL,0, -1
+Guardia de Tremp,GT,0, -1
+Palau de Noguera,PT,0, -1
+Tremp,TP,0, -1
+Salàs de Pallars,SD,0, -1
+La Pobla de Segur,PS,0, -1
+Vallvidrera Inferior,VR,0, -1
+Can Feu - Gràcia,CF,0, -1
+Sabadell Plaça Major,PJ,0, -1
+La Creu Alta,CT,1, -1
+Sabadell Nord,NO,1, -1
+Sabadell Parc del Nord,PN,1, -1
+Nuria,NU,0, -1
+Queralbs,QUE,0, -1
+Ribes-Enllaç,RR,0, -1
+Ribes-Vila,RV,0, -1
+Polígon industrial del Segre,PG,0, -1

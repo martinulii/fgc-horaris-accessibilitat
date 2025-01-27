@@ -1,0 +1,48 @@
+{
+    "Lavabos": [
+        {
+            "service": "Lavabos",
+            "comment": "a",
+            "timestamp": "2025-01-27 14:02:16.296579",
+            "station": "PC"
+        },
+        {
+            "service": "Lavabos",
+            "comment": "a",
+            "timestamp": "2025-01-27 14:02:21.213596",
+            "station": "PC"
+        },
+        {
+            "service": "Lavabos",
+            "comment": "a",
+            "timestamp": "2025-01-27 14:02:21.983080",
+            "station": "PC"
+        },
+        {
+            "service": "Lavabos",
+            "comment": "a",
+            "timestamp": "2025-01-27 14:02:22.600534",
+            "station": "PC"
+        },
+        {
+            "service": "Lavabos",
+            "comment": "b",
+            "timestamp": "2025-01-27 14:02:37.579567",
+            "station": "PC"
+        }
+    ],
+    "Accessibilitat": [
+        {
+            "service": "Accessibilitat",
+            "comment": "a",
+            "timestamp": "2025-01-27 14:02:29.802568",
+            "station": "PC"
+        },
+        {
+            "service": "Accessibilitat",
+            "comment": "a",
+            "timestamp": "2025-01-27 14:02:31.146483",
+            "station": "PC"
+        }
+    ]
+}
