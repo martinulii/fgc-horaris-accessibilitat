@@ -5,7 +5,7 @@ from streamlit_folium import st_folium
 from math import radians, cos, sin, sqrt, atan2
 from datetime import datetime, timedelta, time
 import json
-
+import requests
 
 # ---------------------------
 # Funcions d'utilitat
@@ -21,7 +21,8 @@ def load_data():
     calendar_dates = pd.read_csv("data/calendar_dates.txt")
     routes = pd.read_csv("data/routes.txt")
     access = pd.read_csv("data/access.csv")
-    return stops, stop_times, trips, calendar_dates, routes, access
+    shapes = pd.read_csv("data/shapes.txt")
+    return stops, stop_times, trips, calendar_dates, routes, access, shapes
 
 
 def calculate_distance(lat1, lon1, lat2, lon2):
@@ -173,7 +174,46 @@ def show_info(nearest_stop):
     if upcoming_trips.empty:
         st.write(f"No hi ha viatges previstos")
     else:
-        # Mostrar la taula amb els noms de columna modificats
+        if st.button("Mostra informació del proper tren"):
+            next_train = upcoming_trips.iloc[0]  # Agafar el primer tren de la llista
+            st.subheader("Informació del proper tren")
+            st.write(f"**Línia:** {next_train['route_id']}")
+            st.write(f"**Destí:** {next_train['trip_headsign']}")
+            st.write(f"**Numero:** {next_train['trip_id']}")
+
+            API_URL = "https://dadesobertes.fgc.cat/api/explore/v2.1/catalog/datasets/posicionament-dels-trens/records"
+            params = {"dataset": "posicionament-dels-trens", "limit": 100}
+
+            resposta = requests.get(API_URL, params=params)
+            resposta.raise_for_status()
+            dades = resposta.json()
+
+            if "results" in dades:
+                for registre in dades["results"]:
+                    if registre['id'] == next_train['trip_id']:
+                        linia = registre.get('lin', 'Desconegut')
+                        desti = registre.get('desti', 'Desconegut')
+                        direccio = registre.get('dir', 'Desconegut')
+                        id = registre.get('id', 'Desconegut')
+                        st.write(f"Un tren coincideix")
+                        st.write(f"**Línia:** {linia}")
+                        st.write(f"**Destí:** {desti}")
+                        st.write(f"**Direcció:** {direccio}")
+                        st.write(f"**Estacionat a:** {registre.get('estacionat_a', 'Desconegut')}")
+                        st.write(f"**Properes parades:** {registre.get('properes_parades', 'Desconegut')}")
+                        st.write(f"**En hora:** {registre.get('en_hora', 'Desconegut')}")
+                        st.write(f"**Tipus d'unitat:** {registre.get('tipus_unitat', 'Desconegut')}")
+                        st.write(f"**Unitat:** {registre.get('ut', 'Desconegut')}")
+                        st.write(f"**Ocupació mi (%):** {registre.get('ocupacio_mi_percent', 'Desconegut')}")
+                        st.write(f"**Ocupació ri (%):** {registre.get('ocupacio_ri_percent', 'Desconegut')}")
+                        st.write(f"**Ocupació m1 (%):** {registre.get('ocupacio_m1_percent', 'Desconegut')}")
+                        st.write(f"**Ocupació m2 (%):** {registre.get('ocupacio_m2_percent', 'Desconegut')}")
+
+                                                                    
+
+        
+
+        #TIMETABLE
         column_titles = {
             "departure_time": "Hora de sortida",
             "route_id": "Línia",
@@ -226,13 +266,66 @@ def select_station_map():
     return nearest_stop
 
 
+def obtenir_color_lin(linia):
+    colors = {
+        "L6": "purple", "L7": "brown", "L8": "purple", "R5": "darkgreen", "R6": "gray", "S1": "orange", "S2": "green", "S3": "darkblue", "S4": "yellow",
+        "S8": "cyan", "R60": "gray", "R50": "blue", "L12": "lightblue", "S9": "pink", "MM": "black", "FV": "darkblue", "R63": "gray", "R53": "green",
+        "RL1": "orange", "RL2": "orange", "L1": "black",
+    }
+    return colors.get(linia, "gray")  # Si la línia no es coneix, es fa servir un color gris
+
 def geotren():
     st.subheader("Geotren")
-    st.markdown("""
-    <iframe title="Geotren" width="800" height="600" 
-            src="https://geotren.fgc.cat" 
-            frameborder="0" tabindex="1" scrolling="yes"></iframe>
-    """, unsafe_allow_html=True)
+
+    # Data for shapes (rail tracks)
+    shapes_data = shapes
+    rail_tracks = {shape_id: list(zip(group["shape_pt_lat"], group["shape_pt_lon"]))
+                    for shape_id, group in shapes_data.groupby("shape_id")}
+
+    # API URL per obtenir la posició en temps real
+    API_URL = "https://dadesobertes.fgc.cat/api/explore/v2.1/catalog/datasets/posicionament-dels-trens/records"
+    params = {"dataset": "posicionament-dels-trens", "limit": 100}
+
+    resposta = requests.get(API_URL, params=params)
+    resposta.raise_for_status()
+    dades = resposta.json()
+
+    # Crear el mapa centrat a Barcelona
+    mapa = folium.Map(location=[41.398222, 2.141769], zoom_start=12)
+
+    # Dibuixar les vies del tren
+    for shape_id, points in rail_tracks.items():
+        folium.PolyLine(points, color="blue", weight=2, opacity=0.7).add_to(mapa)
+
+    # Afegir els trens en temps real amb icones direccionals
+    if "results" in dades:
+        for registre in dades["results"]:
+            try:
+                lat, lon = registre['geo_point_2d']['lat'], registre['geo_point_2d']['lon']
+                linia = registre.get('lin', 'Desconegut')
+                desti = registre.get('desti', 'Desconegut')
+                direccio = registre.get('dir', 'Desconegut')
+                color = obtenir_color_lin(linia)
+                
+                # Seleccionar icona segons la direcció
+                angle = 0 if direccio == "A" else 180
+                icon_svg = f"""
+                <svg width='20' height='20' viewBox='0 0 20 20'>
+                    <polygon points='10,0 20,20 0,20' fill='{color}' fill-opacity='1' stroke='black' stroke-width='2' stroke_opacity='1' transform='rotate({angle},10,10)'/>
+                </svg>
+                """
+                
+                # Afegir marcador amb icona de triangle direccionada
+                folium.Marker(
+                    location=[lat, lon],
+                    icon=folium.DivIcon(html=icon_svg),
+                    popup=f"Destí: {desti}"
+                ).add_to(mapa)
+            except KeyError:
+                st.error("Error en obtenir les dades del tren.")
+    
+    # Mostrar el mapa en Streamlit
+    st_folium(mapa, width=700, height=500)
 
 
 def load_comments():
@@ -298,7 +391,8 @@ def show_comments(service, station_name):
         if service_comments:
             # Mostrar comentaris en ordre de recents a antics
             for comment in service_comments:
-                st.write(f"{comment['timestamp']} - {comment['comment']}")
+                formatted_timestamp = comment['timestamp'].strftime("%Y-%m-%d %H:%M")
+                st.write(f"{formatted_timestamp} - {comment['comment']}")
         else:
             st.write("No hi ha comentaris per aquesta estació.")
     else:
@@ -355,7 +449,7 @@ def show_access(station):
 # ---------------------------
 
 st.title("FGC")
-stops, stop_times, trips, calendar_dates, routes, access = load_data()
+stops, stop_times, trips, calendar_dates, routes, access, shapes = load_data()
 
 # Iniciar l'estat de sessió si no existeix
 if "menu_level_1" not in st.session_state:
@@ -392,6 +486,7 @@ if st.session_state["menu_level_1"] == "Buscador":
 
     # --- Si es selecciona "Mapa" ---
     if st.session_state["menu_level_2"] == "Mapa":
+        st.text("Selecciona una teva ubicació fent clic al mapa per escollir l'estació més propera.")
         st.session_state["selected_stop"] = select_station_map()  # Seleccionar estació al mapa
         if st.session_state["selected_stop"] is not None:
             show_info(st.session_state["selected_stop"])  # Mostrar info de l'estació
